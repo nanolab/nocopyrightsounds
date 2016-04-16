@@ -1,6 +1,6 @@
 import lxml.html
 import requests
-import codecs
+import os.path
 
 mapping = [ (' [NCS Release]', ''), ('–', '-'), ('’', '') ]
 cookie = {'wordpress_logged_in_...': '...'} # copy this cookie from your browser
@@ -15,11 +15,12 @@ for page in range(1, 20):
             name = name.replace(k, v)
         url = element.get('href')
         filename = '%03d. %s.mp3' % (n, name)
-        dl = lxml.html.fromstring(requests.get('%s?download=1' % url, cookies=cookie).content).cssselect('.download_5sec a')[0].get('href')
-        r = requests.get(dl, stream=True)
-        if r.status_code == 200:
-            with open(filename, 'wb') as f:
-                for chunk in r:
-                    f.write(chunk)
+        if not os.path.isfile(filename):
+            dl = lxml.html.fromstring(requests.get('%s?download=1' % url, cookies=cookie).content).cssselect('.download_5sec a')[0].get('href')
+            r = requests.get(dl, stream=True)
+            if r.status_code == 200:
+                with open(filename, 'wb') as f:
+                    for chunk in r:
+                        f.write(chunk)
         print(filename)
         n += 1
