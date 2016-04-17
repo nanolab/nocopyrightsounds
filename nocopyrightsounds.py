@@ -2,7 +2,7 @@ import lxml.html
 import requests
 import os.path
 
-mapping = [ (' [NCS Release]', ''), ('–', '-'), ('’', '') ]
+mapping = [ (' [NCS Release]', ''), ('–', '-'), ('’', ''), ('?', '') ]
 cookie = {'wordpress_logged_in_...': '...'} # copy this cookie from your browser
 
 n = 1
